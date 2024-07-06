@@ -1,33 +1,25 @@
-import css from "../Contact/Contact.module.css";
-import PropTypes from 'prop-types'
+import { FaUser, FaPhoneAlt } from 'react-icons/fa';
+import css from './Contact.module.css';
+import { useDispatch } from 'react-redux';
+import { deleteContact } from '../../redux/contactsOps';
 
 
-
-const Contact = ({ item, handleDelete }) => {
-
-
-  return (
-    <div>
-          <li key={item.id} className={css["contact-item"]}>
-            <span className={css["contact-name"]}>{item.name}</span>
-            <span className={css["contact-number"]}>tel.{item.number}</span>
-            <button
-              className={css["button-delete"]}
-              onClick={() => handleDelete(item.id)}
-            >
+// export default function Contact({ contact }) {
+export default function Contact({ data }) {
+    const dispatch = useDispatch();
+    const handleDelete = () => {
+        dispatch(deleteContact(data.id))
+    }
+    return (
+    <div className={css.user}>
+        <div className={css.info}>
+            <p><FaUser />{data.name}</p>
+            <p><FaPhoneAlt />{data.number}</p>
+        </div>
+        <button className={css.btn_delete}
+              onClick = {handleDelete}>
               Delete
-            </button>
-          </li>
+        </button>
     </div>
   );
 }
-Contact.propTypes = {
-  item: PropTypes.shape({
-    id: PropTypes.string.isRequired,
-    name: PropTypes.string.isRequired,
-    number: PropTypes.string.isRequired,
-  }).isRequired,
-  handleDelete: PropTypes.func.isRequired,
-};
-
-export default Contact;

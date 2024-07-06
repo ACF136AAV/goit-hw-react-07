@@ -1,34 +1,47 @@
-import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "axios";
+import axios from 'axios';
+import { createAsyncThunk } from '@reduxjs/toolkit';
 
-axios.defaults.baseURL = "https://66746a4f75872d0e0a965ea1.mockapi.io/";
- 
-export const fetchContacts = createAsyncThunk("contacts/fetchAll", async (_, thunkAPI) => {
-  try {
-    const { data } = await axios("contacts");
-    return data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.response.data)
-  }
+axios.defaults.baseURL = "https://66753e67a8d2b4d072ef3fb4.mockapi.io";
+
+export const fetchContacts = createAsyncThunk(
+    "contacts/fetchContacts",
+    async (_, thunkAPI) => {
+        try {
+            const { data } = await axios.get("/contacts");
+            return data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.message);
+        }
 });
 
-export const addContact = createAsyncThunk("contacts/addContact", async (contactData, thunkAPI) => {
-  try {
-    const { data } = await axios.post("contacts", contactData);
-    return data
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.response.data)
-  }
-});
+export const addContact = createAsyncThunk(
+    "contacts/addContact",
+    async (newContact, thunkAPI) => {
+        try {
+            const { data } = await axios.post("/contacts", newContact);
+            return data;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.message);
+        }
+    }
+);
 
 export const deleteContact = createAsyncThunk(
-  "contacts/deleteContact",
-  async (id, thunkAPI) => {
-    try {
-      const { data } = await axios.delete(`contacts/${id}`);
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.response.data);
+    "contacts/deleteContact",
+    async (contactId, thunkAPI) => {
+        try {
+            const { data } = await axios.delete(`/contacts/${contactId}`);
+            return data.id;
+        } catch (error) {
+            return thunkAPI.rejectWithValue(error.message);
+        }
     }
-  }
 );
+
+//Redux Toolkit спрощує процес оголошення асинхронного 
+//генератора екшену за допомогою функції createAsyncThunk().
+//Першим аргументом вона приймає тип екшену, а другим функцію, 
+//яка повинна виконати HTTP - запит і повернути проміс 
+//із даними, які стануть значенням payload.
+//Вона повертає асинхронний генератор екшену(операцію) 
+//при запуску якого виконається функція з кодом запиту.

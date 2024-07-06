@@ -1,7 +1,6 @@
-.contact-list {
-    list-style: none;
-    padding: 15px 15px;
-    border: 1px solid black;
-    border-radius: 20px;
-
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    list-style-type: none;
 }
